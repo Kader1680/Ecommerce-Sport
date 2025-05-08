@@ -1,11 +1,15 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\ProductController;
+// use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\HomeController;
 
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,14 +22,73 @@ use App\Http\Controllers\OrderController;
 */
 
 
-Route::get('/', [ProductController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'home']);
+
+// Route::middleware(['auth'])->group(function () {
+//     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+//     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+//     Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+//     Route::post('/order/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
+//     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+// });
+
 
 Route::middleware(['auth'])->group(function () {
+    // Cart routes
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::patch('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
 
-    Route::post('/order/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    // Order routes
+    Route::post('/checkout/all', [OrderController::class, 'checkoutAll'])->name('checkout.all');
+    Route::post('/checkout/item/{id}', [OrderController::class, 'checkoutItem'])->name('checkout.item');
+    
+    // Orders history
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders');
 });
+
+
+
+Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+    // Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+});
+
+
+// Route::get('/admin/products/create', [ProductController::class, 'create']);
+// Route::post('admin/products/create', [ProductController::class, 'store'])->name('products.store');
+// // Route::get('admin/products', [ProductController::class, 'index'])->name('products.index');
+// // Route::get('admin/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
+// // Route::put('admin/products/{id}', [ProductController::class, 'update'])->name('products.update');
+// // Route::delete('admin/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+
+// Route::prefix('admin/products')->name('admin.products.')->group(function () {
+//     Route::get('/create', [ProductController::class, 'create'])->name('create');
+//     Route::post('/', [ProductController::class, 'store'])->name('store');
+// });
+
+Route::get('admin/products/create', [ProductController::class, 'create'])->name('create');
+Route::post('admin/products/create', [ProductController::class, 'store'])->name('store');
+
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+
+
+
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::get('/user', [AuthController::class, 'user']);
+//     Route::post('/logout', [AuthController::class, 'logout']);
+// });
+
 

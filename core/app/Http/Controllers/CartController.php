@@ -1,21 +1,25 @@
 <?php
-
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use App\Models\CartItem;
+
 use App\Models\Product;
+use App\Models\CartItem;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CartController extends Controller {
-    public function index() {
-        $cartItems = CartItem::where('user_id', Auth::id())->with('product')->get();
-        return view('cart.index', compact('cartItems'));
+class CartController extends Controller
+{
+    public function index()
+    {
+        $cartItems = CartItem::with('product')->where('user_id', Auth::id())->get();
+        return view('carts', compact('cartItems'));
     }
 
-    public function add(Product $product) {
+    public function add(Product $product)
+    {
         $item = CartItem::where('user_id', Auth::id())->where('product_id', $product->id)->first();
+
         if ($item) {
-            $item->quantity += 1;
+            $item->quantity++;
             $item->save();
         } else {
             CartItem::create([
@@ -24,11 +28,13 @@ class CartController extends Controller {
                 'quantity' => 1,
             ]);
         }
-        return back();
+
+        return redirect("carts");
     }
 
-    public function remove($id) {
-        CartItem::where('id', $id)->where('user_id', Auth::id())->delete();
-        return back();
+    public function placeOrder()
+    {
+        CartItem::where('user_id', Auth::id())->delete();
+        return back()->with('success', 'Order placed successfully!');
     }
 }
