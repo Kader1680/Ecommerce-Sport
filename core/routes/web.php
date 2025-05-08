@@ -43,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Order routes
     Route::post('/checkout/all', [OrderController::class, 'checkoutAll'])->name('checkout.all');
-    Route::post('/checkout/item/{id}', [OrderController::class, 'checkoutItem'])->name('checkout.item');
+    Route::post('/checkout/{id}', [OrderController::class, 'checkoutItem'])->name('checkout');
     
     // Orders history
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');

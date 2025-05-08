@@ -12,7 +12,7 @@
       <li>
           <a href="/cart" class="cart">
               <i class="fas fa-shopping-cart"></i>
-              <span class="cart-count">0</span>
+              <span class="cart-count">{{ $cartCount }}</span>
               carts
           </a>
       </li>

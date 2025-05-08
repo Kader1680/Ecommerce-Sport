@@ -124,7 +124,7 @@
                     </td>
                     <td>{{ $item->product->price * $item->quantity }} DA</td>
                     <td>
-                        <form action="{{ route('checkout.item', $item->id) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('checkout', $item->id) }}" method="POST" style="display:inline;">
                             @csrf
                             <button type="submit" class="place-order-btn">Order This</button>
                         </form>

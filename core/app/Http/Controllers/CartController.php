@@ -8,6 +8,18 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
+
+//     public function countcart(){
+//     $cartCount = 0;
+
+//     if (Auth::check()) {
+//         $cartCount = CartItem::where('user_id', Auth::id())->count();
+//     }
+
+//     return view('layouts.navbar', compact('cartCount'));
+// }
+
+
     public function index()
     {
         $cartItems = CartItem::with('product')->where('user_id', Auth::id())->get();
