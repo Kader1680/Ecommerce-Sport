@@ -93,12 +93,15 @@
 </style>
 
 <div class="cart-container">
-    <h2>Your Cart</h2>
+
+
+    <h2>Your Cart </h2>
 
     @if($cartItems->count())
         <table>
             <thead>
                 <tr>
+                    <th>number</th>
                     <th>Product</th>
                     <th>Price</th>
                     <th>Quantity</th>
@@ -109,6 +112,7 @@
             <tbody>
                 @foreach($cartItems as $item)
                 <tr>
+                    <td>{{ $item->product->id }}</td>
                     <td>{{ $item->product->name }}</td>
                     <td>{{ $item->product->price }} DA</td>
                     <td>
@@ -116,19 +120,21 @@
                             <form action="{{ route('cart.update', $item->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('PATCH')
-                                <button type="button" class="quantity-btn minus" data-item="{{ $item->id }}">-</button>
-                                <input type="number" name="quantity" class="quantity-input" value="{{ $item->quantity }}" min="1" data-item="{{ $item->id }}">
-                                <button type="button" class="quantity-btn plus" data-item="{{ $item->id }}">+</button>
+                                {{-- <button type="button" class="quantity-btn minus" data-item="{{ $item->quantity }}">-</button> --}}
+                                <input type="number" name="quantity" class="quantity-input"   min="1" data-item="{{ $item->quantity }}">
+                                {{-- <button type="button" class="quantity-btn plus" data-item="{{ $item->quantity }}">+</button> --}}
                             </form>
                         </div>
                     </td>
-                    <td>{{ $item->product->price * $item->quantity }} DA</td>
+                    <td>{{ $item->product->price * $item->quantity }} DA</td> --}}
                     <td>
                         <form action="{{ route('checkout', $item->id) }}" method="POST" style="display:inline;">
+                            @method('POST')
+                        
                             @csrf
                             <button type="submit" class="place-order-btn">Order This</button>
                         </form>
-                        <form action="{{ route('cart.remove', $item->id) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('cart.remove', $item->product->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="remove-btn">Remove</button>
@@ -136,16 +142,16 @@
                     </td>
                 </tr>
                 @endforeach
-                <tr class="total-row">
+                {{-- <tr class="total-row">
                     <td colspan="3">Total</td>
-                    {{-- <td>{{ $totalPrice }} DA</td> --}}
+                    <td>{{ $totalPrice }} DA</td>
                     <td>
                         <form action="{{ route('checkout.all') }}" method="POST">
                             @csrf
                             <button type="submit" class="place-order-btn">Order All</button>
                         </form>
                     </td>
-                </tr>
+                </tr> --}}
             </tbody>
         </table>
     @else

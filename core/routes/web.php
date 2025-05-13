@@ -42,11 +42,13 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
 
     // Order routes
-    Route::post('/checkout/all', [OrderController::class, 'checkoutAll'])->name('checkout.all');
+    // Route::post('/checkout/all', [OrderController::class, 'checkoutAll'])->name('checkout.all');
     Route::post('/checkout/{id}', [OrderController::class, 'checkoutItem'])->name('checkout');
     
     // Orders history
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+    Route::delete('/order/delete/{id}', [OrderController::class, 'delete'])->name('delete');
+
 });
 
 
@@ -92,3 +94,15 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // });
 
 
+
+Route::get('/about', function () {
+    return view('about');
+});
+
+
+
+Route::get('/payment/{id_order}', function () {
+    return view('payment');
+});
+
+Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'submit'])->name('payment');
