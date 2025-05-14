@@ -1,16 +1,10 @@
-
 @extends("layouts.master")
 @section("content")
 
 
     <title>Add Product</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f6f8fa;
-            padding: 40px;
-            margin: 0;
-        }
+      
 
         .container {
             max-width: 600px;
@@ -38,13 +32,32 @@
         input[type="text"],
         input[type="number"],
         input[type="file"],
-        textarea {
+        textarea,
+        select {
             width: 100%;
             padding: 10px 12px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 6px;
             font-size: 14px;
+            background-color: #fff;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        select {
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,<svg%20xmlns="http://www.w3.org/2000/svg"%20width="10"%20height="10"%20viewBox="0%200%2010%2010"><path%20fill="%23666"%20d="M0%202l5%205%205-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 12px;
+        }
+
+        select:focus,
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #28a745;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
         }
 
         textarea {
@@ -109,6 +122,16 @@
         <label for="description">Description</label>
         <textarea name="description" id="description">{{ old('description') }}</textarea>
 
+        <label for="category_id">Category</label>
+        <select name="category_id" id="category_id" required>
+            <option value="">Select Category</option>
+            @foreach ($categories as $category)
+                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                    {{ $category->name }}
+                </option>
+            @endforeach
+        </select>
+
         <label for="price">Price ($)</label>
         <input type="number" name="price" id="price" step="0.01" value="{{ old('price') }}" required>
 
@@ -119,8 +142,4 @@
     </form>
 </div>
 
-
-
 @endsection
-
-

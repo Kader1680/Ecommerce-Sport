@@ -85,6 +85,7 @@
 .btn-confirm {
     background-color: #007bff;
     color: white;
+    font-size: 33px
     padding: 10px 16px;
     border: none;
     border-radius: 6px;
@@ -147,7 +148,7 @@
 
                 @if($order->status !== 'paid')
                   <div style="display: flex;">
-                      <button type="submit" class="btn-confirm"><a href="{{'payment/'. $order->id}}">Confirm Order</a></button>
+                      <button  type="submit" class="btn-confirm"><a style="color: white" href="{{'payment/'. $order->id}}">Payment</a></button>
                       {{-- <form action="{{ route('orders.index', $order->id) }}" method="POST">
                         @csrf
                         

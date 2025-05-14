@@ -52,12 +52,29 @@
         .shipped { background-color: blue; }
         .cancelled { background-color: red; }
 
+        .add{
+    background-color: #07b851db;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    height: fit-content;
+    padding: 4px;
+    border-radius: 4px;
+    text-decoration-line: none;
+        }
+
     </style>
 </head>
 <body>
 
     <div class="section">
-        <h2>All Products</h2>
+        <div style="display: flex; justify-content: space-between;">
+             <h2>All Products</h2>
+            <div>
+             <a class="add" href="/admin/products/create">Add new product</a>
+             <a class="add" href="/admin/categories/create">Add new category</a>
+            </div>
+        </div>
         <table>
             <thead>
                 <tr>

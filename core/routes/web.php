@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -74,7 +76,23 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(
 
 Route::get('admin/products/create', [ProductController::class, 'create'])->name('create');
 Route::post('admin/products/create', [ProductController::class, 'store'])->name('store');
+ 
 
+Route::post('admin/categories/create', [CategoryController::class, 'store'])->name('categories.store');
+Route::get('admin/categories/create', [CategoryController::class, 'create']);
+
+
+
+Route::get('admin/categories/edit/{category}', [CategoryController::class, 'edit'])->name('categories.edit');
+
+Route::post('admin/categories/edit/{category}', [CategoryController::class, 'update'])->name('categories.edit');
+
+Route::post('admin/categories/delete/{id}', [CategoryController::class, 'destroy'])->name('categories.delete');
+
+
+Route::get('admin/categories', [CategoryController::class, 'index'])->name("categories.index");
+
+ 
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
 

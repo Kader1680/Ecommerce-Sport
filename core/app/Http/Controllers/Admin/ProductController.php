@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,9 @@ class ProductController extends Controller
 {
     public function create()
     {
-        return view('admin.products.create');
+         $categories = Category::all();
+         return view('admin.products.create', compact('categories'));
+      
     }
     
     public function store(Request $request)
@@ -19,7 +22,8 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'category_id' => 'required|exists:categories,id'
         ]);
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');

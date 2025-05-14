@@ -67,7 +67,7 @@ class OrderController extends Controller
 
         $total = $cartItem->product->price;
 
-        // dd($total)
+        
         
         $order = Order::create([
             'user_id' => $user->id,
@@ -83,6 +83,11 @@ class OrderController extends Controller
         ]);
 
         $cartItem->delete();
+
+        return redirect()->route('orders')->with('success', 'Item ordered successfully!');
+
+
+
 
 
         // // DB::beginTransaction();
@@ -114,6 +119,11 @@ class OrderController extends Controller
         // }
     }
 
+     public function confirmorder()
+    {
+
+
+    }
     public function index()
     {
         $orders = Order::where('user_id', Auth::id())
