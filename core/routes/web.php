@@ -76,6 +76,17 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(
 
 Route::get('admin/products/create', [ProductController::class, 'create'])->name('create');
 Route::post('admin/products/create', [ProductController::class, 'store'])->name('store');
+Route::post('admin/products/create', [ProductController::class, 'store'])->name('store');
+Route::get('admin/products', [ProductController::class, 'index'])->name('index');
+
+
+Route::get('//admin/prodcuts/edit/{product}', [ProductController::class, 'edit'])->name('edit');
+Route::post('/admin/prodcuts/update/{product}', [ProductController::class, 'update'])->name('update');
+
+
+Route::post('/admin/prodcuts/delete/{id}', [ProductController::class, 'destroy'])->name('delete');
+
+
  
 
 Route::post('admin/categories/create', [CategoryController::class, 'store'])->name('categories.store');

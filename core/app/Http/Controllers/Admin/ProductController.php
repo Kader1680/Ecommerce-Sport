@@ -57,12 +57,14 @@ class ProductController extends Controller
         }
 
         $product->update($validated);
-        return redirect()->route('admin.products.index')->with('success', 'Product updated.');
+        return redirect()->route('admin.dashboard')->with('success', 'Product updated.');
     }
 
-    public function destroy(Product $product)
+    public function destroy($id)
     {
+        
+        $product = Product::findOrFail($id);
         $product->delete();
-        return redirect()->route('admin.products.index')->with('success', 'Product deleted.');
+        return redirect()->route('admin.dashboard')->with('success', 'Product deleted.');
     }
 }
