@@ -41,7 +41,7 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect("carts");
+        return redirect("cart");
     }
 
     public function placeOrder()

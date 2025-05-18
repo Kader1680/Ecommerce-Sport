@@ -49,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
     
     // Orders history
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');
-    Route::delete('/order/delete/{id}', [OrderController::class, 'delete'])->name('delete');
+    Route::post('/order/cancel/{id}', [OrderController::class, 'cancel'])->name('order.cancel');
 
 });
 
@@ -80,11 +80,14 @@ Route::post('admin/products/create', [ProductController::class, 'store'])->name(
 Route::get('admin/products', [ProductController::class, 'index'])->name('index');
 
 
-Route::get('//admin/prodcuts/edit/{product}', [ProductController::class, 'edit'])->name('edit');
+Route::get('/admin/prodcuts/edit/{product}', [ProductController::class, 'edit'])->name('edit');
 Route::post('/admin/prodcuts/update/{product}', [ProductController::class, 'update'])->name('update');
 
 
 Route::post('/admin/prodcuts/delete/{id}', [ProductController::class, 'destroy'])->name('delete');
+Route::post('/admin/prodcuts/delete/{id}', [ProductController::class, 'destroy'])->name('delete');
+
+Route::delete('/admin/users/{user}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
 
 
  
@@ -129,9 +132,12 @@ Route::get('/about', function () {
 });
 
 
+// showPaymentForm
+// Route::get('/payment/   }', function () {
+//     return view('payment', []);
+// });
 
-Route::get('/payment/{id_order}', function () {
-    return view('payment');
-});
+Route::get('/payment/{orderId}', [App\Http\Controllers\PaymentController::class, 'showPaymentForm']);
 
-Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'submit'])->name('payment');
+
+Route::post('/submit/{orderId}', [App\Http\Controllers\PaymentController::class, 'submit'])->name('submit');

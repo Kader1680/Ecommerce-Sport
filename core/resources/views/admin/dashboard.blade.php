@@ -95,6 +95,10 @@
         .delete-btn {
             background-color: #e3342f;
             color: white;
+          
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 13px;
         }
 
         .delete-btn:hover {
@@ -174,7 +178,7 @@
                     <tr>
                         <td>#{{ $order->id }}</td>
                         <td>{{ $order->user->name }}</td>
-                        <td>${{ number_format($order->total, 2) }}</td>
+                        <td>${{ $order->total_price }}</td>
                         <td>
                             <span class="status {{ strtolower($order->status) }}">
                                 {{ ucfirst($order->status) }}
@@ -187,28 +191,36 @@
         </table>
     </div>
 
-    <!-- Users Section -->
-    <div class="section">
-        <h2>All Users</h2>
-        <table>
-            <thead>
+  <div class="section">
+    <h2>All Users</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Registered</th>
+                <th>Action</th> <!-- New column -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($users as $user)
                 <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Registered</th>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ $user->created_at->format('Y-m-d') }}</td>
+                    <td>
+                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <butto style="border: none;" type="submit" class="delete-btn " onclick="return confirm('Are you sure you want to delete this user?')">
+                                Delete
+                            </butto>
+                        </form>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach ($users as $user)
-                    <tr>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->created_at->format('Y-m-d') }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-
+            @endforeach
+        </tbody>
+    </table>
+</div>
 </body>
 @endsection

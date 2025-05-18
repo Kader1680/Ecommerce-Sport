@@ -83,7 +83,7 @@
 }
 
 .btn-confirm {
-    background-color: #007bff;
+     
     color: white;
     font-size: 33px
     padding: 10px 16px;
@@ -103,7 +103,8 @@
     transition: background-color 0.3s ease;
 }
 .btn-confirm:hover {
-    background-color: #0056b3;
+    background-color: #17b174;
+rgba(23, 177, 115, 0.732)
 }
 
 .no-orders {
@@ -111,6 +112,39 @@
     color: #888;
     margin-top: 50px;
 }
+
+
+.order-status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.status-canceled {
+    background-color: #ff8787;
+    color: #721c24;
+}
+
+.status-default {
+    background-color: #f7f4c5;
+    color: #c5a100;
+}
+
+
+.status-paid {
+    background-color: #34dd86;
+    color: #0e8547;
+}
+
+
+.confrim{
+    padding: 11px 30px;
+    height: fit-content;
+    background-color: #17b174;
+    font-size: 16px;
+}
+
 
 </style>
 @section('content')
@@ -128,9 +162,14 @@
             <div class="order-card">
                 <div class="order-header">
                     <h4 class="order-id">Order #{{ $order->id }}</h4>
-                    <span class="order-status {{ $order->status }}">
+                    <span class="order-status 
+                        {{ strtolower($order->status) === 'canceled' ? 'status-canceled' : '' }}
+                        {{ strtolower($order->status) === 'paid' ? 'status-paid' : '' }}
+                        {{ !in_array(strtolower($order->status), ['paid', 'canceled']) ? 'status-default' : '' }}">
                         {{ ucfirst($order->status) }}
                     </span>
+                        
+                                
                 </div>
 
                 <ul class="order-items">
@@ -146,20 +185,20 @@
                     Total: {{ $order->total_price }} DA
                 </div>
 
-                @if($order->status !== 'paid')
+                @if($order->status !== 'paid' && $order->status !== 'canceled')
                   <div style="display: flex;">
-                      <button  type="submit" class="btn-confirm"><a style="color: white" href="{{'payment/'. $order->id}}">Payment</a></button>
-                      {{-- <form action="{{ route('orders.index', $order->id) }}" method="POST">
-                        @csrf
-                        
+                      <button  type="submit" class="btn-confirm confrim"><a style="color: white" href="{{'payment/'. $order->id}}">confirm</a></button>    
                     </form> --}}
-                    <form style="margin-left:1rem" action="{{ route('delete', $order->id) }}" method="POST">
+                    <form style="margin-left:1rem" action="{{ route('order.cancel', $order->id) }}" method="POST">
                         @csrf
-                        @method('delete')
-                        <button type="submit" class="btn-delete">delete Order</button>
+                       
+                        <button style="font-size: 16px; " type="submit" class="btn-delete">cancel Order</button>
                     </form>
                   </div>
                 @endif
+
+
+
             </div>
         @endforeach
     @else

@@ -89,14 +89,17 @@
         </div>
     @endif
 
-    <form action="{{ route('payment') }}" method="POST">
-        @csrf
 
-        <div class="form-group">
+    <form action="{{ route('submit',  $order->id ) }}"   method="POST">
+
+
+        @csrf
+        {{-- <div class="form-group">
             <label for="name">Nom complet</label>
             <input type="text" id="name" name="name" required>
         </div>
-
+         --}}
+    
         <div class="form-group">
             <label for="ccp_number">Numéro CCP</label>
             <input type="text" id="ccp_number" name="ccp_number" required placeholder="1234567">
@@ -108,13 +111,11 @@
         </div>
 
         <div class="form-group">
-            <label for="amount">Montant (DZD)</label>
-            <input type="number" id="amount" name="amount" step="0.01" required>
-        </div>
-
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea id="description" name="description" rows="3"></textarea>
+            <label for=" amount ">amount</label>
+            <input   id="amount" name="amount" step="0.01"
+            
+            value="{{  $order->total_price  }}"    
+            required>
         </div>
 
         <button type="submit" class="btn-submit">Envoyer le Paiement</button>

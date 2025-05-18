@@ -84,6 +84,7 @@ class OrderController extends Controller
 
         $cartItem->delete();
 
+
         return redirect()->route('orders')->with('success', 'Item ordered successfully!');
 
 
@@ -137,19 +138,23 @@ class OrderController extends Controller
      
     }
 
-     public function delete($id)
+     public function cancel($id)
     {
-        $orders = Order::where('id', $id)
-                      ->where('user_id', Auth::id())
-                      ->first();
-        
-        if(!$orders){
+        $order = Order::where('id', $id)
+                  ->where('user_id', Auth::id())
+                  ->first();
+
+        if (!$order) {
             return redirect()->route('orders.index')->with('error', 'Commande introuvable ou non autorisée.');
         }
-          
-        $orders->delete();
-                      
-        return view('orders.index', compact('orders'));
+
+        $order->status = 'canceled';
+        $order->save();
+
+        return redirect()->route('orders.index')->with('success', 'Commande annulée avec succès.');
      
     }
+
+
+    
 }

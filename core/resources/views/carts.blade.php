@@ -130,7 +130,8 @@
                     <td>
                         <form action="{{ route('checkout', $item->id) }}" method="POST" style="display:inline;">
                             @method('POST')
-                        
+                            
+                            {{ $item->id }}
                             @csrf
                             <button type="submit" class="place-order-btn">Order This</button>
                         </form>
