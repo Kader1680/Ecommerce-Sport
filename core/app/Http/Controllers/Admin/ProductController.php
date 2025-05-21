@@ -67,4 +67,23 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Product deleted.');
     }
+
+
+
+    public function filter($category_id){
+
+    
+    if($category_id){
+        $products = Product::where('category_id', $category_id)->get();
+        return view('index', compact('products'));
+    }else{
+        $products = Product::all();
+        return view('index', compact('products'));
+
+    }
+
+
+    
+
+    }
 }

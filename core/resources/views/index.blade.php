@@ -94,9 +94,10 @@
 </section>
 
 <div class="categories">
-    <a href="">Men</a>
-    <a href="">Women</a>
-    <a href="">Accessories</a>
+    <a href="{{route("filter", 0)}}">All</a>
+    <a href="{{route("filter", 1)}}">Men</a>
+    <a href="{{route("filter", 2)}}">Women</a>
+    <a href="{{route("filter", 3)}}">Accessories</a>
 </div>
 
 <section class="product" id="products">
