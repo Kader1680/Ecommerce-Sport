@@ -70,20 +70,19 @@ class ProductController extends Controller
 
 
 
-    public function filter($category_id){
+    public function filter($category_name){
 
-    
-    if($category_id){
-        $products = Product::where('category_id', $category_id)->get();
+    $categories = Category::where('name', $category_name)->first();
+   
+    if($category_name != "All-Products" ){
+        $products = Product::where('category_id',  $categories->id)->get();
         return view('index', compact('products'));
     }else{
         $products = Product::all();
         return view('index', compact('products'));
-
     }
 
 
-    
 
     }
 }

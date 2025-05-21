@@ -80,7 +80,7 @@ Route::post('admin/products/create', [ProductController::class, 'store'])->name(
 Route::get('admin/products', [ProductController::class, 'index'])->name('index');
 
 
-Route::get('admin/products/{category_id}', [ProductController::class, 'filter'])->name('filter');
+Route::get('prodcuts/{category_id}', [ProductController::class, 'filter'])->name('filter');
 
 
 Route::get('/admin/prodcuts/edit/{product}', [ProductController::class, 'edit'])->name('edit');
