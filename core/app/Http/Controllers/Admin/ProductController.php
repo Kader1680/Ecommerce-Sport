@@ -73,13 +73,14 @@ class ProductController extends Controller
     public function filter($category_name){
 
     $categories = Category::where('name', $category_name)->first();
-   
+    $allcategories = Category::all();
+    
     if($category_name != "All-Products" ){
         $products = Product::where('category_id',  $categories->id)->get();
-        return view('index', compact('products'));
+        return view('index', compact('products', 'allcategories'));
     }else{
         $products = Product::all();
-        return view('index', compact('products'));
+        return view('index', compact('products', 'allcategories'));
     }
 
 

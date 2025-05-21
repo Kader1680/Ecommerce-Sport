@@ -95,15 +95,14 @@
 
 <div class="categories">
 
-    {{-- @foreach ($categories as $category)
+    <a href="{{route("filter", 'All-Products')}}">All Products</a>
+
+    @foreach ($allcategories as $category)
     <a href="{{route("filter", $category->name)}}">{{$category->name}}</a>
-    @endforeach --}}
+    @endforeach
+
     
-    
-    <a href="{{route("filter", "All-Products")}}">All Products</a>
-    <a href="{{route("filter", "Men")}}">Men</a>
-    <a href="{{route("filter", "Women")}}">Women</a>
-    <a href="{{route("filter", "Accessoire")}}">Accessoire</a>
+  
 </div>
 
 <section class="product" id="products">
