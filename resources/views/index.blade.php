@@ -109,9 +109,20 @@
     <h2 style="text-align: center;">Our Products</h2>
     <div class="products-container">
         @foreach ($products as $product)
+        
             <div class="product-card">
-                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+                {{-- <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"> --}}
+                
+                
+        @if($product->image)
+            <img src="{{ $product->image }}" alt="{{ $product->name }}" style="width:200px; height:auto;">
+            {{ $product->image }}
+        @else
+            <p>No image</p>
+        @endif
+                
                 <h3>{{ $product->name }}</h3>
+               
                 <p class="price">${{ $product->price }}</p>
                 <p>{{ $product->description }}</p>
                 <form action="{{ route('cart.add', $product->id) }}" method="POST">

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -25,10 +26,18 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'category_id' => 'required|exists:categories,id'
         ]);
+
+        //  if ($request->hasFile('image')) {
+        //     $validated['image'] = $request->file('image')->store('products', 'public');
+        // }
+
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('products', 'public');
+            $path = $request->file('image')->store('products', 's3');
+            $validated['image'] = Storage::disk('s3')->url($path);
         }
+
         Product::create($validated);
+
         return redirect()->route('admin.dashboard')->with('success', 'Product created.');
     }
 
@@ -52,8 +61,12 @@ class ProductController extends Controller
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
+        // if ($request->hasFile('image')) {
+        //     $validated['image'] = $request->file('image')->store('products', 'public');
+        // }
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('products', 'public');
+            $path = $request->file('image')->store('products', 's3');
+            $validated['image'] = Storage::disk('s3')->url($path);
         }
 
         $product->update($validated);
