@@ -1,57 +1,204 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="auth-form-container" style="max-width: 400px; margin: 50px auto; padding: 30px; background: #f9f9f9; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
-    <h2 style="text-align: center; margin-bottom: 20px;">Register</h2>
+<style>
+    :root {
+        --primary-dark: #111111;
+        --accent-red: #ff4747;
+        --border-gray: #e1e1e1;
+        --text-gray: #666;
+        --bg-soft: #fcfcfc;
+    }
 
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+    /* Page Wrapper to center form */
+    .auth-page-wrapper {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        background-color: var(--bg-soft);
+    }
 
-        {{-- Name --}}
-        <div style="margin-bottom: 15px;">
-            <label for="name" style="display:block; font-weight: bold;">Name</label>
-            <input type="text" name="name" value="{{ old('name') }}" required
-                style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-            @error('name')
-                <span style="color: red; font-size: 14px;">{{ $message }}</span>
-            @enderror
-        </div>
+    .auth-card {
+        width: 100%;
+        max-width: 450px;
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0,0,0,0.03);
+    }
 
-        {{-- Email --}}
-        <div style="margin-bottom: 15px;">
-            <label for="email" style="display:block; font-weight: bold;">Email</label>
-            <input type="email" name="email" value="{{ old('email') }}" required
-                style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-            @error('email')
-                <span style="color: red; font-size: 14px;">{{ $message }}</span>
-            @enderror
-        </div>
+    .auth-card h2 {
+        font-size: 2rem;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 8px;
+        letter-spacing: -0.5px;
+        color: var(--primary-dark);
+    }
 
-        {{-- Password --}}
-        <div style="margin-bottom: 15px;">
-            <label for="password" style="display:block; font-weight: bold;">Password</label>
-            <input type="password" name="password" required
-                style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-            @error('password')
-                <span style="color: red; font-size: 14px;">{{ $message }}</span>
-            @enderror
-        </div>
+    .auth-subtitle {
+        text-align: center;
+        color: var(--text-gray);
+        font-size: 0.95rem;
+        margin-bottom: 30px;
+    }
 
-        {{-- Confirm Password --}}
-        <div style="margin-bottom: 20px;">
-            <label for="password_confirmation" style="display:block; font-weight: bold;">Confirm Password</label>
-            <input type="password" name="password_confirmation" required
-                style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-        </div>
+    .form-group {
+        margin-bottom: 20px;
+    }
 
-        {{-- Submit --}}
-        <button type="submit" style="width: 100%; padding: 10px; background-color: #111; color: white; border: none; border-radius: 4px; font-weight: bold;">
-            Register
-        </button>
-    </form>
+    .form-group label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        color: var(--primary-dark);
+        letter-spacing: 0.5px;
+    }
 
-    <p style="text-align: center; margin-top: 15px;">
-        Already have an account? <a href="{{ route('login') }}" style="color: #3490dc;">Login here</a>
-    </p>
+    .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 1rem;
+        border: 1.5px solid var(--border-gray);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        background-color: #fff;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary-dark);
+        box-shadow: 0 0 0 4px rgba(0,0,0,0.05);
+    }
+
+    /* Error Styling */
+    .error-input {
+        border-color: var(--accent-red) !important;
+    }
+
+    .error-msg {
+        color: var(--accent-red);
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .register-btn {
+        width: 100%;
+        padding: 14px;
+        background-color: var(--primary-dark);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+        margin-top: 10px;
+    }
+
+    .register-btn:hover {
+        background-color: #333;
+        transform: translateY(-1px);
+    }
+
+    .register-btn:active {
+        transform: translateY(0);
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 25px;
+        font-size: 0.9rem;
+        color: var(--text-gray);
+    }
+
+    .auth-footer a {
+        color: var(--primary-dark);
+        text-decoration: none;
+        font-weight: 700;
+        border-bottom: 2px solid var(--accent-red);
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+        .auth-card {
+            padding: 30px 20px;
+            box-shadow: none;
+            border: none;
+            background: transparent;
+        }
+        .auth-page-wrapper {
+            background-color: #fff;
+        }
+    }
+</style>
+
+<div class="auth-page-wrapper">
+    <div class="auth-card">
+        <h2>JOIN THE TEAM</h2>
+        <p class="auth-subtitle">Create your account for a faster checkout.</p>
+
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
+
+            {{-- Name --}}
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" name="name" id="name" value="{{ old('name') }}" 
+                    class="form-control @error('name') error-input @enderror" 
+                    placeholder="Enter your name" required autofocus>
+                @error('name')
+                    <span class="error-msg">{{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- Email --}}
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" name="email" id="email" value="{{ old('email') }}" 
+                    class="form-control @error('email') error-input @enderror" 
+                    placeholder="email@example.com" required>
+                @error('email')
+                    <span class="error-msg">{{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- Password --}}
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" 
+                    class="form-control @error('password') error-input @enderror" 
+                    placeholder="••••••••" required>
+                @error('password')
+                    <span class="error-msg">{{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- Confirm Password --}}
+            <div class="form-group">
+                <label for="password_confirmation">Confirm Password</label>
+                <input type="password" name="password_confirmation" id="password_confirmation" 
+                    class="form-control" placeholder="••••••••" required>
+            </div>
+
+            {{-- Submit --}}
+            <button type="submit" class="register-btn">
+                Create Account
+            </button>
+        </form>
+
+        <p class="auth-footer">
+            Already have an account? <a href="{{ route('login') }}">Log In</a>
+        </p>
+    </div>
 </div>
 @endsection

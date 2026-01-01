@@ -17,7 +17,7 @@
           </a>
       </li>
       <li><a href="/orders">orders</a></li>
-      <li><a href="/admin/dashboard">dashboard</a></li>
+      {{-- <li><a href="/admin/dashboard">dashboard</a></li> --}}
 
 
       @auth
